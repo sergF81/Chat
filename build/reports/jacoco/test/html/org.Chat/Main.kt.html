@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Chat</a> &gt; <a href="index.source.html" class="el_package">org.Chat</a> &gt; <span class="el_source">Main.kt</span></div><h1>Main.kt</h1><pre class="source lang-java linenums">package org.Chat
+
+
+fun main() {
+
+<span class="nc" id="L6">    val test = ChatService()</span>
+<span class="nc" id="L7">    test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;))</span>
+ //   println(test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;)))
+<span class="nc" id="L9">    println(test.chats.toList())</span>
+//    test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;РџСЂРѕРІРµСЂРєР° 222&quot;))
+//    test.add(Chat(userName = &quot;РЎРµСЂРіРµР№&quot;), Message(idUser = 2, messageUser = &quot;РџСЂРѕРІРµСЂРєР° 2221111&quot;))
+//    test.add(Chat(userName = &quot;Yura&quot;), Message(idUser = 3, messageUser = &quot;РџСЂРѕРІРµСЂРєР° Сѓ Р®СЂС‹&quot;, readMessage = true))
+//    test.add(Chat(userName = &quot;11&quot;), Message(idUser = 2, messageUser = &quot;РџСЂРѕРІРµСЂРєР° РџСЂРѕС€Р»Р°&quot;))
+//    test.add(Chat(userName = &quot;11&quot;), Message(idUser = 1, messageUser = &quot;РџСЂРѕРІРµСЂРєР° РџСЂРѕС€Р»Р°1111&quot;))
+  //test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;))
+  //  println(test.chats.toList())
+<span class="nc" id="L17">    println(&quot;________Delete Chat_______________&quot;)</span>
+  //   println(test.deleteChat(1))
+  //  println(test.chats.toList())
+
+    //   println(test.deleteMessage(2, 2))
+<span class="nc" id="L22">    println(&quot;________edit message_______________&quot;)</span>
+<span class="nc" id="L23">    println(test.edit(2, 3, &quot;Р®СЂРєР° РїСЂРѕС€РµР» РїСЂРѕРІРµСЂРєСѓ&quot;))</span>
+<span class="nc" id="L24">    println(test.chats.toList())</span>
+<span class="nc" id="L25">    println(&quot;________ListUnread message_______________&quot;)</span>
+<span class="nc" id="L26">    println(test.listUnreadChat())</span>
+<span class="nc" id="L27">    println(&quot;________getChat message_______________&quot;)</span>
+<span class="nc" id="L28">    println(test.getChat())</span>
+<span class="nc" id="L29">    println(&quot;________Delete message_______________&quot;)</span>
+<span class="nc" id="L30">    println(test.deleteMessage(1, 31))</span>
+<span class="nc" id="L31">    println(test.chats.toList())</span>
+<span class="nc" id="L32">    println(&quot;________getListMessage message_______________&quot;)</span>
+<span class="nc" id="L33">    print(test.getListMessage(3, 1, 1))</span>
+    //println(test.chats.toList())
+
+<span class="nc" id="L36">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
