@@ -41,13 +41,11 @@ class ChatService {
     }
 
     fun deleteChat(idU: Int): String {
-        for ((index, chat) in chats.withIndex()) {
-            if (chats[index].idUser == idU) {
-                chats.removeAt(index)
-                return "Chat with this ID deleted"
-            }
+        return if (chats.removeIf { it.idUser == idU }) {
+            "Chat with this ID deleted"
+        } else {
+            "Chat with the given ID was not found"
         }
-        return "Chat with the given ID was not found"
     }
 
     fun deleteMessage(id: Int, idU: Int): String {
@@ -86,42 +84,35 @@ class ChatService {
         return ("Message with the given ID was not found")
     }
 
-    fun listUnreadChat(): Int {
+    fun listUnreadChat(): String {
         var unreadMessage: Int = 0
         for ((chatIndex, chat) in chats.withIndex()) {
-            for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
-                if (chat.messages[chatMessageIndex].readMessage == false) {
-                    unreadMessage += 1
-                    break
-                }
-            }
+            if (chat.messages.none { it.readMessage }) unreadMessage++
         }
-        return unreadMessage
+        return "You have $unreadMessage chats with Unread messages!"
     }
 
-    fun getChat(): String {
+    fun getChat(): MutableList<Chat> {
         val listChat: MutableList<Chat> = arrayListOf()
-        for ((index, chat) in chats.withIndex()) {
-            if (!chats[index].messages.isEmpty()) listChat.add(chat)
-        }
-        if (listChat.isEmpty()) println("You do not have a messages!")
-        else return listChat.toString()
-        return listChat.toString()
+        if (chats.isNotEmpty()) {
+            listChat.addAll(chats)
+        } else println("You do not have a messages!")
+        return listChat
     }
 
     fun getListMessage(idU: Int, id: Int, count: Int): MutableList<Message> {
         val listChat: MutableList<Message> = arrayListOf()
         var idIndex = id
-        for ((indexChat, chat) in chats.withIndex()){
+        for ((indexChat, chat) in chats.withIndex()) {
             for ((indexMessage, message) in chat.messages.withIndex()) {
-                    if (idIndex < id + count && (count + id - 1) <= chat.messages.size) {
-                        if (chats[indexChat].messages[indexMessage].idUser == idU && chats[indexChat].messages[indexMessage].idMessage == idIndex) {
-                            listChat.add(chats[indexChat].messages[indexMessage])
-                            idIndex++
-                        }
+                if (idIndex < id + count && (count + id - 1) <= chat.messages.size) {
+                    if (chats[indexChat].messages[indexMessage].idUser == idU && chats[indexChat].messages[indexMessage].idMessage == idIndex) {
+                        listChat.add(chats[indexChat].messages[indexMessage])
+                        idIndex++
                     }
                 }
             }
+        }
 
         return listChat
     }
