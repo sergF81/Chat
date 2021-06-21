@@ -5,33 +5,38 @@ fun main() {
 
 <span class="nc" id="L6">    val test = ChatService()</span>
 <span class="nc" id="L7">    test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;))</span>
- //   println(test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;)))
-<span class="nc" id="L9">    println(test.chats.toList())</span>
+<span class="nc" id="L8">    test.add(Chat(userName = &quot;Serg&quot;), Message(idUser = 2, messageUser = &quot;Hello&quot;, readMessage = true))</span>
+<span class="nc" id="L9">    test.add(Chat(userName = &quot;Oleg&quot;), Message(idUser = 3, messageUser = &quot;World&quot;, readMessage = true))</span>
+    //   println(test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;)))
+<span class="nc" id="L11">    println(test.chats.toList())</span>
 //    test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;РџСЂРѕРІРµСЂРєР° 222&quot;))
 //    test.add(Chat(userName = &quot;РЎРµСЂРіРµР№&quot;), Message(idUser = 2, messageUser = &quot;РџСЂРѕРІРµСЂРєР° 2221111&quot;))
 //    test.add(Chat(userName = &quot;Yura&quot;), Message(idUser = 3, messageUser = &quot;РџСЂРѕРІРµСЂРєР° Сѓ Р®СЂС‹&quot;, readMessage = true))
 //    test.add(Chat(userName = &quot;11&quot;), Message(idUser = 2, messageUser = &quot;РџСЂРѕРІРµСЂРєР° РџСЂРѕС€Р»Р°&quot;))
 //    test.add(Chat(userName = &quot;11&quot;), Message(idUser = 1, messageUser = &quot;РџСЂРѕРІРµСЂРєР° РџСЂРѕС€Р»Р°1111&quot;))
-  //test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;))
-  //  println(test.chats.toList())
-<span class="nc" id="L17">    println(&quot;________Delete Chat_______________&quot;)</span>
-  //   println(test.deleteChat(1))
-  //  println(test.chats.toList())
+    //test.add(Chat(userName = &quot;Pavel&quot;), Message(idUser = 1, messageUser = &quot;List&quot;))
+<span class="nc" id="L18">    println(test.chats.toList())</span>
+
+<span class="nc" id="L20">    println(&quot;________Delete Chat_______________&quot;)</span>
+    //  println(test.deleteChat(1))
+<span class="nc" id="L22">    println(test.chats.toList())</span>
+    //  println(test.chats.toList())
 
     //   println(test.deleteMessage(2, 2))
-<span class="nc" id="L22">    println(&quot;________edit message_______________&quot;)</span>
-<span class="nc" id="L23">    println(test.edit(2, 3, &quot;Р®СЂРєР° РїСЂРѕС€РµР» РїСЂРѕРІРµСЂРєСѓ&quot;))</span>
-<span class="nc" id="L24">    println(test.chats.toList())</span>
-<span class="nc" id="L25">    println(&quot;________ListUnread message_______________&quot;)</span>
-<span class="nc" id="L26">    println(test.listUnreadChat())</span>
-<span class="nc" id="L27">    println(&quot;________getChat message_______________&quot;)</span>
-<span class="nc" id="L28">    println(test.getChat())</span>
-<span class="nc" id="L29">    println(&quot;________Delete message_______________&quot;)</span>
-<span class="nc" id="L30">    println(test.deleteMessage(1, 31))</span>
-<span class="nc" id="L31">    println(test.chats.toList())</span>
-<span class="nc" id="L32">    println(&quot;________getListMessage message_______________&quot;)</span>
-<span class="nc" id="L33">    print(test.getListMessage(3, 1, 1))</span>
+<span class="nc" id="L26">    println(&quot;________edit message_______________&quot;)</span>
+<span class="nc" id="L27">    println(test.edit(2, 3, &quot;Р®СЂРєР° РїСЂРѕС€РµР» РїСЂРѕРІРµСЂРєСѓ&quot;))</span>
+<span class="nc" id="L28">    println(test.chats.toList())</span>
+<span class="nc" id="L29">    println(&quot;________ListUnread message_______________&quot;)</span>
+<span class="nc" id="L30">    println(test.listUnreadChat())</span>
+<span class="nc" id="L31">    println(&quot;________getChat message_______________&quot;)</span>
+<span class="nc" id="L32">    println(test.getChat())</span>
+<span class="nc" id="L33">    println(&quot;________Delete message_______________&quot;)</span>
+<span class="nc" id="L34">    println(test.chats.toList())</span>
+<span class="nc" id="L35">    test.deleteMessage(1, 2)</span>
+<span class="nc" id="L36">    println(test.chats.toList())</span>
+<span class="nc" id="L37">    println(&quot;________getListMessage message_______________&quot;)</span>
+<span class="nc" id="L38">    print(test.getListMessage(3, 1, 1))</span>
     //println(test.chats.toList())
 
-<span class="nc" id="L36">}</span>
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
+<span class="nc" id="L41">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -6,7 +6,5 @@ class MessageNotFoundException : Exception("Message with the given ID was not fo
 
 }
 
-class CountMessageToMatchException : Exception("You entered incorrect parameters: message id or number of messages") {
-
+class ChatNotFoundException : Exception("Message with the given ID was not found") {
 }
-

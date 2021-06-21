@@ -1,42 +1,24 @@
 package org.Chat
 
+import java.util.*
 
 class ChatService {
-
     var chats: MutableList<Chat> = mutableListOf()
-    var messages: MutableList<Message> = mutableListOf()
 
-    fun add(chat: Chat, message: Message): Int {
+    fun add(chat: Chat, message1: Message): Int {
         if (chats.isEmpty()) {
-            val chatNew = chat.copy(idUser = 1)
-            val messageNew = message.copy(idMessage = 1)
-            messages.plusAssign(messageNew)
-            chat.messages.plusAssign(messages.last())
-            chats.plusAssign(chatNew)
-        } else {
-            var id: Int = 0
-            for ((index, chat) in chats.withIndex()) {
-                if (chats[index].idUser == message.idUser) {
-                    id = message.idUser
-                    break
+            chats
+                .also { chats.plusAssign(chat.copy(idUser = 1)) }
+                .also { chat.messages.plusAssign(message1.copy(idMessage = 1)) }
+        } else if (chats.find { it.idUser == message1.idUser } == null)
+            chats.find { it.idUser == message1.idUser }
+                .also { chat.messages.plusAssign(message1.copy(idMessage = 1)) }
+                .also { chats.plusAssign(chat.copy(idUser = chats.size + 1)) }
+        else
+            chats.find { it.idUser == message1.idUser }
+                .also {
+                    it?.messages?.plusAssign(message1.copy(idMessage = message1.idMessage + it.messages.size + 1))
                 }
-            }
-            when {
-                id == message.idUser -> {
-                    println(message)
-                    val messageNew = message.copy(idMessage = messages.last().idMessage + 1)
-                    messages.plusAssign(messageNew)
-                    chats[id - 1].messages.plusAssign(messages.last())
-                }
-                id != message.idUser -> {
-                    val chatNew = chat.copy(idUser = chats.last().idUser + 1)
-                    val messageNew = message.copy(idMessage = 1)
-                    messages.plusAssign(messageNew)
-                    chat.messages.plusAssign(messageNew)
-                    chats.plusAssign(chatNew)
-                }
-            }
-        }
         return chats.last().idUser
     }
 
@@ -48,40 +30,29 @@ class ChatService {
         }
     }
 
-    fun deleteMessage(id: Int, idU: Int): String {
-        for ((index, message) in messages.withIndex()) {
-            if (messages[index].idUser == idU && messages[index].idMessage == id) {
-                messages.removeAt(index)
-                for ((chatIndex, chat) in chats.withIndex()) {
-                    for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
-                        if (chat.messages[chatMessageIndex].idUser == idU && chat.messages[chatMessageIndex].idMessage == id) {
-                            if (chat.messages.size == 1) {
-                                deleteChat(idU)
-                                return "Chat and Message with this ID deleted because Chat is empty!"
-                                break
-                            } else chat.messages.removeAt(chatMessageIndex)
-                            break
-                        }
-                    }
-                }
-                return ("Message with this ID deleted")
+    fun deleteMessage(chatId: Int, messageId: Int) {
+        (chats.find { chat -> chat.idUser == chatId } ?: throw ChatNotFoundException())
+            .also { chat ->
+                chat.messages
+                    .find { message -> message.idMessage == messageId } ?: throw MessageNotFoundException()
             }
-        }
-        return ("Message with the given ID was not found")
+            .also { chat ->
+                chat.messages
+                    .removeIf { message -> message.idMessage == messageId }
+            }
     }
 
-    fun edit(id: Int, idU: Int, messageEdit: String): String {
-        for ((chatIndex, chat) in chats.withIndex()) {
-            for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
-                if (chat.messages[chatMessageIndex].idUser == idU && chat.messages[chatMessageIndex].idMessage == id) {
-                    val chatNew = chat.copy()
-                    chat.messages[chatMessageIndex].messageUser = messageEdit
-                    return ("Message with this ID edited")
-                    break
-                }
+    fun edit(messageId: Int, userId: Int, messageEdit: String): String {
+        chats.asSequence()
+            .filter { chat -> chat.idUser == userId }
+            .take(1)
+            .map { chat ->
+                chat.messages.filter { message -> message.idMessage == messageId }
+                    .toMutableList()
+                    .also { chat.messages.replaceAll { message -> message.copy(messageUser = messageEdit) } }
             }
-        }
-        return ("Message with the given ID was not found")
+            .toList()
+        return "Message changed!"
     }
 
     fun listUnreadChat(): String {
@@ -100,20 +71,17 @@ class ChatService {
         return listChat
     }
 
-    fun getListMessage(idU: Int, id: Int, count: Int): MutableList<Message> {
-        val listChat: MutableList<Message> = arrayListOf()
-        var idIndex = id
-        for ((indexChat, chat) in chats.withIndex()) {
-            for ((indexMessage, message) in chat.messages.withIndex()) {
-                if (idIndex < id + count && (count + id - 1) <= chat.messages.size) {
-                    if (chats[indexChat].messages[indexMessage].idUser == idU && chats[indexChat].messages[indexMessage].idMessage == idIndex) {
-                        listChat.add(chats[indexChat].messages[indexMessage])
-                        idIndex++
-                    }
-                }
+    fun getListMessage(userId: Int, messageId: Int, count: Int) {
+        chats.asSequence()
+            .filter { chat -> chat.idUser == userId }
+            .take(1)
+            .map { chat ->
+                chat.messages.filter { message -> message.idMessage in messageId until messageId + count }
+                    .toMutableList()
+                    .toMutableList()
+                    .also { chat.messages.replaceAll { message -> message.copy(readMessage = true) } }
             }
-        }
-
-        return listChat
+            .toList()
+            .let { println(it) }
     }
 }

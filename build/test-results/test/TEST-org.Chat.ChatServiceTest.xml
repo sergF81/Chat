@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.Chat.ChatServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-06-07T05:39:46" hostname="TOCHKA0996" time="0.093">
+<testsuite name="org.Chat.ChatServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-06-21T08:23:43" hostname="TOCHKA0996" time="0.09">
   <properties/>
-  <testcase name="add" classname="org.Chat.ChatServiceTest" time="0.093"/>
+  <testcase name="add" classname="org.Chat.ChatServiceTest" time="0.09"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

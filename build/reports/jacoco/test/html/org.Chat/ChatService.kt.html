@@ -1,129 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChatService.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Chat</a> &gt; <a href="index.source.html" class="el_package">org.Chat</a> &gt; <span class="el_source">ChatService.kt</span></div><h1>ChatService.kt</h1><pre class="source lang-java linenums">package org.Chat
-
-
-<span class="fc" id="L4">class ChatService {</span>
-
-<span class="pc" id="L6">    var chats: MutableList&lt;Chat&gt; = mutableListOf()</span>
-<span class="pc" id="L7">    var messages: MutableList&lt;Message&gt; = mutableListOf()</span>
-
-    fun add(chat: Chat, message: Message): Int {
-<span class="fc bfc" id="L10" title="All 2 branches covered.">        if (chats.isEmpty()) {</span>
-<span class="fc" id="L11">            val chatNew = chat.copy(idUser = 1)</span>
-<span class="fc" id="L12">            val messageNew = message.copy(idMessage = 1)</span>
-<span class="fc" id="L13">            messages.plusAssign(messageNew)</span>
-<span class="fc" id="L14">            chat.messages.plusAssign(messages.last())</span>
-<span class="fc" id="L15">            chats.plusAssign(chatNew)</span>
-        } else {
-<span class="fc" id="L17">            var id: Int = 0</span>
-<span class="fc bfc" id="L18" title="All 2 branches covered.">            for ((index, chat) in chats.withIndex()) {</span>
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">                if (chats[index].idUser == message.idUser) {</span>
-<span class="nc" id="L20">                    id = message.idUser</span>
-<span class="nc" id="L21">                    break</span>
-                }
-            }
-<span class="fc" id="L24">            when {</span>
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">                id == message.idUser -&gt; {</span>
-<span class="nc" id="L26">                    println(message)</span>
-<span class="nc" id="L27">                    val messageNew = message.copy(idMessage = messages.last().idMessage + 1)</span>
-<span class="nc" id="L28">                    messages.plusAssign(messageNew)</span>
-<span class="nc" id="L29">                    chats[id - 1].messages.plusAssign(messages.last())</span>
-                }
-<span class="pc bpc" id="L31" title="1 of 2 branches missed.">                id != message.idUser -&gt; {</span>
-<span class="fc" id="L32">                    val chatNew = chat.copy(idUser = chats.last().idUser + 1)</span>
-<span class="fc" id="L33">                    val messageNew = message.copy(idMessage = 1)</span>
-<span class="fc" id="L34">                    messages.plusAssign(messageNew)</span>
-<span class="fc" id="L35">                    chat.messages.plusAssign(messageNew)</span>
-<span class="fc" id="L36">                    chats.plusAssign(chatNew)</span>
-                }
-            }
-        }
-<span class="fc" id="L40">        return chats.last().idUser</span>
+import java.util.*
+<span class="fc" id="L3">class ChatService {</span>
+<span class="pc" id="L4">    var chats: MutableList&lt;Chat&gt; = mutableListOf()</span>
+    fun add(chat: Chat, message1: Message) : Int{
+<span class="fc bfc" id="L6" title="All 2 branches covered.">        if (chats.isEmpty()) {</span>
+<span class="fc" id="L7">            chats</span>
+<span class="fc" id="L8">                .also { chats.plusAssign(chat.copy(idUser = 1)) }</span>
+<span class="fc" id="L9">                .also { chat.messages.plusAssign(message1.copy(idMessage = 1)) }</span>
+<span class="pc bpc" id="L10" title="3 of 8 branches missed.">        } else if (chats.find { it.idUser == message1.idUser } == null)</span>
+<span class="pc bpc" id="L11" title="2 of 6 branches missed.">            chats.find { it.idUser == message1.idUser }</span>
+<span class="fc" id="L12">                .also { chat.messages.plusAssign(message1.copy(idMessage = 1)) }</span>
+<span class="fc" id="L13">                .also { chats.plusAssign(chat.copy(idUser = chats.size + 1)) }</span>
+        else
+<span class="nc bnc" id="L15" title="All 6 branches missed.">            chats.find { it.idUser == message1.idUser }</span>
+<span class="nc" id="L16">                .also {</span>
+<span class="nc bnc" id="L17" title="All 4 branches missed.">                    it?.messages?.plusAssign(message1.copy(idMessage = message1.idMessage + it.messages.size + 1))</span>
+<span class="nc" id="L18">                }</span>
+<span class="fc" id="L19">        return chats.last().idUser</span>
     }
 
     fun deleteChat(idU: Int): String {
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        for ((index, chat) in chats.withIndex()) {</span>
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">            if (chats[index].idUser == idU) {</span>
-<span class="fc" id="L46">                chats.removeAt(index)</span>
-<span class="fc" id="L47">                return &quot;Chat with this ID deleted&quot;</span>
-            }
+<span class="pc bpc" id="L23" title="1 of 4 branches missed.">        return if (chats.removeIf { it.idUser == idU }) {</span>
+<span class="fc" id="L24">            &quot;Chat with this ID deleted&quot;</span>
+        } else {
+<span class="nc" id="L26">            &quot;Chat with the given ID was not found&quot;</span>
         }
-<span class="nc" id="L50">        return &quot;Chat with the given ID was not found&quot;</span>
     }
-
-    fun deleteMessage(id: Int, idU: Int): String {
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        for ((index, message) in messages.withIndex()) {</span>
-<span class="nc bnc" id="L55" title="All 4 branches missed.">            if (messages[index].idUser == idU &amp;&amp; messages[index].idMessage == id) {</span>
-<span class="nc" id="L56">                messages.removeAt(index)</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">                for ((chatIndex, chat) in chats.withIndex()) {</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">                    for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {</span>
-<span class="nc bnc" id="L59" title="All 4 branches missed.">                        if (chat.messages[chatMessageIndex].idUser == idU &amp;&amp; chat.messages[chatMessageIndex].idMessage == id) {</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">                            if (chat.messages.size == 1) {</span>
-<span class="nc" id="L61">                                deleteChat(idU)</span>
-<span class="nc" id="L62">                                return &quot;Chat and Message with this ID deleted because Chat is empty!&quot;</span>
-                                break
-<span class="nc" id="L64">                            } else chat.messages.removeAt(chatMessageIndex)</span>
-<span class="nc" id="L65">                            break</span>
-                        }
-                    }
-                }
-<span class="nc" id="L69">                return (&quot;Message with this ID deleted&quot;)</span>
+    fun deleteMessage(chatId: Int, messageId: Int) {
+<span class="pc bpc" id="L30" title="3 of 8 branches missed.">        (chats.find { chat -&gt; chat.idUser == chatId } ?: throw ChatNotFoundException())</span>
+<span class="nc" id="L31">            .also { chat -&gt;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                chat.messages</span>
+<span class="nc bnc" id="L33" title="All 6 branches missed.">                    .find { message -&gt; message.idMessage == messageId } ?: throw MessageNotFoundException()</span>
+<span class="nc" id="L34">            }</span>
+<span class="nc" id="L35">            .also { chat -&gt;</span>
+<span class="nc" id="L36">                chat.messages</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                    .removeIf { message -&gt; message.idMessage == messageId }</span>
+<span class="nc" id="L38">            }</span>
+<span class="nc" id="L39">    }</span>
+    fun edit(messageId: Int, userId: Int, messageEdit: String): String {
+<span class="nc" id="L41">        chats.asSequence()</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            .filter { chat -&gt; chat.idUser == userId }</span>
+<span class="nc" id="L43">            .take(1)</span>
+<span class="nc" id="L44">            .map { chat -&gt;</span>
+<span class="nc bnc" id="L45" title="All 4 branches missed.">                chat.messages.filter { message -&gt; message.idMessage == messageId }</span>
+<span class="nc" id="L46">                    .toMutableList()</span>
+<span class="nc" id="L47">                    .also { chat.messages.replaceAll { message -&gt; message.copy(messageUser = messageEdit) } }</span>
             }
-        }
-<span class="nc" id="L72">        return (&quot;Message with the given ID was not found&quot;)</span>
+<span class="nc" id="L49">            .toList()</span>
+<span class="nc" id="L50">        return &quot;Message changed!&quot;</span>
     }
 
-    fun edit(id: Int, idU: Int, messageEdit: String): String {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        for ((chatIndex, chat) in chats.withIndex()) {</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">            for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {</span>
-<span class="nc bnc" id="L78" title="All 4 branches missed.">                if (chat.messages[chatMessageIndex].idUser == idU &amp;&amp; chat.messages[chatMessageIndex].idMessage == id) {</span>
-<span class="nc" id="L79">                    val chatNew = chat.copy()</span>
-<span class="nc" id="L80">                    chat.messages[chatMessageIndex].messageUser = messageEdit</span>
-<span class="nc" id="L81">                    return (&quot;Message with this ID edited&quot;)</span>
-                    break
-                }
+    fun listUnreadChat(): String {
+<span class="fc" id="L54">        var unreadMessage: Int = 0</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for ((chatIndex, chat) in chats.withIndex()) {</span>
+<span class="pc bpc" id="L56" title="2 of 4 branches missed.">            if (chat.messages.none { it.readMessage }) unreadMessage++</span>
+        }
+<span class="fc" id="L58">        return &quot;You have $unreadMessage chats with Unread messages!&quot;</span>
+    }
+
+    fun getChat(): MutableList&lt;Chat&gt; {
+<span class="fc" id="L62">        val listChat: MutableList&lt;Chat&gt; = arrayListOf()</span>
+<span class="pc bpc" id="L63" title="2 of 4 branches missed.">        if (chats.isNotEmpty()) {</span>
+<span class="fc" id="L64">            listChat.addAll(chats)</span>
+<span class="nc" id="L65">        } else println(&quot;You do not have a messages!&quot;)</span>
+<span class="fc" id="L66">        return listChat</span>
+    }
+
+    fun getListMessage(userId: Int, messageId: Int, count: Int) {
+<span class="nc" id="L70">        chats.asSequence()</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            .filter { chat -&gt; chat.idUser == userId }</span>
+<span class="nc" id="L72">            .take(1)</span>
+<span class="nc" id="L73">            .map { chat -&gt;</span>
+<span class="nc bnc" id="L74" title="All 6 branches missed.">                chat.messages.filter { message -&gt; message.idMessage in messageId until messageId + count }</span>
+<span class="nc" id="L75">                    .toMutableList()</span>
+<span class="nc" id="L76">                    .toMutableList()</span>
+<span class="nc" id="L77">                    .also { chat.messages.replaceAll { message -&gt; message.copy(readMessage = true) } }</span>
             }
-        }
-<span class="nc" id="L86">        return (&quot;Message with the given ID was not found&quot;)</span>
-    }
-
-    fun listUnreadChat(): Int {
-<span class="fc" id="L90">        var unreadMessage: Int = 0</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        for ((chatIndex, chat) in chats.withIndex()) {</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">            for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {</span>
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">                if (chat.messages[chatMessageIndex].readMessage == false) {</span>
-<span class="fc" id="L94">                    unreadMessage += 1</span>
-<span class="fc" id="L95">                    break</span>
-                }
-            }
-        }
-<span class="fc" id="L99">        return unreadMessage</span>
-    }
-
-    fun getChat(): String {
-<span class="fc" id="L103">        val listChat: MutableList&lt;Chat&gt; = arrayListOf()</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        for ((index, chat) in chats.withIndex()) {</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">            if (!chats[index].messages.isEmpty()) listChat.add(chat)</span>
-        }
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (listChat.isEmpty()) println(&quot;You do not have a messages!&quot;)</span>
-<span class="fc" id="L108">        else return listChat.toString()</span>
-<span class="nc" id="L109">        return listChat.toString()</span>
-    }
-
-    fun getListMessage(idU: Int, id: Int, count: Int): MutableList&lt;Message&gt; {
-<span class="nc" id="L113">        val listChat: MutableList&lt;Message&gt; = arrayListOf()</span>
-<span class="nc" id="L114">        var idIndex = id</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        for ((indexChat, chat) in chats.withIndex()){</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">            for ((indexMessage, message) in chat.messages.withIndex()) {</span>
-<span class="nc bnc" id="L117" title="All 4 branches missed.">                    if (idIndex &lt; id + count &amp;&amp; (count + id - 1) &lt;= chat.messages.size) {</span>
-<span class="nc bnc" id="L118" title="All 4 branches missed.">                        if (chats[indexChat].messages[indexMessage].idUser == idU &amp;&amp; chats[indexChat].messages[indexMessage].idMessage == idIndex) {</span>
-<span class="nc" id="L119">                            listChat.add(chats[indexChat].messages[indexMessage])</span>
-<span class="nc" id="L120">                            idIndex++</span>
-                        }
-                    }
-                }
-            }
-
-<span class="nc" id="L126">        return listChat</span>
-    }
+<span class="nc" id="L79">            .toList()</span>
+<span class="nc" id="L80">            .let { println(it) }</span>
+<span class="nc" id="L81">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
